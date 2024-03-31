@@ -2,6 +2,7 @@ import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-
 import { styles } from "./styles";
 import { Task, TaskType } from "../../components/Task";
 import { useState } from "react";
+import { Alert } from "react-native";
 
 export function Home () {
     const [ tasks, setTasks ] = useState<TaskType[]>([])
@@ -9,9 +10,15 @@ export function Home () {
     const [ description, setDescription ] = useState<string>('')
 
     const handleAddTask = () => {
-        const newTask = { id: tasks.length + 1, description, checked: false }
-        setTasks(prevState => [...prevState, newTask])
-        setDescription('')
+        if (description.length < 1) {
+            Alert.alert(
+                "Tarefa vazia", "Informe uma descrição da sua tarefa para que ela possa ser criada"
+            )
+        } else {
+            const newTask = { id: tasks.length + 1, description, checked: false }
+            setTasks(prevState => [...prevState, newTask])
+            setDescription('')
+        }
     }
 
     const handleRemoveTask = (id: number) => {
